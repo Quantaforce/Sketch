@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Exercise 2</title>
+    <style>
+	.canvas{
+		margin:0 auto;
+		height:600px;
+		width:600px;
+		border:1px solid black;
+		display:grid;
+		grid-template-columns:repeat(16,1fr);
+	}
+	.canvas div{
+		height:37.5px;
+		width:37.5px;
+		display:inline-block;
+		box-sizing:border-box;
+
+	}
+    </style>
+  </head>
+  <body>
+	  <div class="canvas">
+	  </div>
+	  <input type="color" id="color" value="black" >
+	  <input type="number" min="1" max="100" name="pixel" step="1" id="pixelNo">
+    <script>
+	    const c=document.querySelector('.canvas');
+	    let pc="black";
+	    let watchColor=(event)=>{
+		pc=event.target.value;
+	    }
+	    document.querySelector('#color').addEventListener("input",watchColor);
+	    let movecolor=()=>{
+
+	    	let pixArr=document.querySelectorAll('.canvas div');
+		
+	    	pixArr.forEach(e=>{
+			e.style.height=`${pix_size}px`;
+			e.style.width=`${pix_size}px`;
+			e.addEventListener("mouseover",(event)=>{
+				event.target.style.backgroundColor=pc;
+			})
+		    })
+	    }
+	    const canvas=document.querySelector('.canvas');
+	    let pix_size=600/16;
+	    let noOfPixel=16;
+	    let render=()=>{
+		    canvas.innerHTML="";
+		    for(let i=0;i<noOfPixel;i++){
+			for(let j=0;j<noOfPixel;j++){
+	    			let d=document.createElement('div');
+				c.append(d);
+			}
+	   	 }
+	    }
+	    render();
+	    movecolor();
+	    let nopix=(event)=>{
+		    noOfPixel=event.target.value;
+		    canvas.style.gridTemplateColumns=`repeat(${noOfPixel},1fr)`;
+		    pix_size=600/noOfPixel;
+		    render();
+		    movecolor();
+		    
+
+	    }
+	    document.querySelector('#pixelNo').addEventListener("change",nopix);
+	   
+    </script>
+  </body>
+</html>
