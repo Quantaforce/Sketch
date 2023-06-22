@@ -25,25 +25,39 @@
 	  </div>
 	  <input type="color" id="color" value="black" >
 	  <input type="number" min="1" max="100" name="pixel" step="1" id="pixelNo">
+	  <button id="rainbow" onclick="randomMoveColor()" >Rainbow mode</button>
+	  <button onclick="render()">clear</button>
     <script>
 	    const c=document.querySelector('.canvas');
 	    let pc="black";
 	    let watchColor=(event)=>{
 		pc=event.target.value;
+		movecolor("color");
 	    }
 	    document.querySelector('#color').addEventListener("input",watchColor);
-	    let movecolor=()=>{
+	    let movecolor=(type)=>{
 
 	    	let pixArr=document.querySelectorAll('.canvas div');
 		
 	    	pixArr.forEach(e=>{
-			e.style.height=`${pix_size}px`;
-			e.style.width=`${pix_size}px`;
 			e.addEventListener("mouseover",(event)=>{
-				event.target.style.backgroundColor=pc;
+				if(type=="color"){
+					event.target.style.backgroundColor=pc;
+				}
+				else if(type=="random"){
+					const randomColor = Math.floor(Math.random()*16777215).toString(16);
+					event.target.style.backgroundColor="#"+randomColor;
+
+				}
+				
 			})
 		    })
 	    }
+	    let randomMoveColor=()=>{
+		movecolor("random");
+	    }
+	    
+	    
 	    const canvas=document.querySelector('.canvas');
 	    let pix_size=600/16;
 	    let noOfPixel=16;
@@ -52,18 +66,27 @@
 		    for(let i=0;i<noOfPixel;i++){
 			for(let j=0;j<noOfPixel;j++){
 	    			let d=document.createElement('div');
+				d.style.height=`${pix_size}px`;
+				d.style.width=`${pix_size}px`;
 				c.append(d);
 			}
 	   	 }
+	    movecolor("color");
 	    }
 	    render();
-	    movecolor();
 	    let nopix=(event)=>{
 		    noOfPixel=event.target.value;
+		    if(noOfPixel>100 || noOfPixel<1){
+			noOfPixel=prompt("enter pixel between 1 and 100")
+		    }
+		    if(noOfPixel>100 || noOfPixel<1){
+			alert("error");
+			return;
+		    }
 		    canvas.style.gridTemplateColumns=`repeat(${noOfPixel},1fr)`;
 		    pix_size=600/noOfPixel;
 		    render();
-		    movecolor();
+		    movecolor("color");
 		    
 
 	    }
